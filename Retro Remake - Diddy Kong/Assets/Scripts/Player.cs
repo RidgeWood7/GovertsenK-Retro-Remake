@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     private Vector2 direction;
     public float moveSpeed = 1f;
     public float jumpStrength = 1f;
+    private bool grounded;
 
     private void Awake()
     {
@@ -19,6 +20,8 @@ public class Player : MonoBehaviour
 
     private void CheckCollision()
     {
+        grounded = false;
+
         Vector2 size = collider.bounds.size;
         size.y += 0.1f;
         size.x /= 2f;
@@ -27,7 +30,12 @@ public class Player : MonoBehaviour
 
         for (int i = 0; i < amount; i++)
         {
+            GameObject hit = results [i].gameObject;
 
+            if (hit.layer == LayerMask.NameToLayer("Ground"))
+            {
+                grounded = hit.transform.position.y < (transform.position.y - 0.5f);
+            }
         }
     }
 
