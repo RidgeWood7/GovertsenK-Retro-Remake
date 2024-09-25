@@ -1,51 +1,76 @@
+using System.Xml.Serialization;
 using UnityEngine;
 
 
 public class Player : MonoBehaviour
 {
+    private SpriteRenderer spriteRenderer;
+    public Sprite[] runSprite;
+    public Sprite climbSprite;
+    public int spriteIndex;
+
     private new Rigidbody2D rigidbody;
     private new Collider2D collider;
+
     private Collider2D[] results;
     private Vector2 direction;
+
     public float moveSpeed = 1f;
     public float jumpStrength = 1f;
+
     private bool grounded;
+    private bool climbing;
+
+    public Vector2 size;
+    public Vector2 size2;
+
+    public Vector3 offset;
+    public Vector3 offset2;
+
+    public LayerMask groundlayer;
+    public LayerMask ladderlayer;
 
     private void Awake()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         rigidbody = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
         results = new Collider2D[4];
     }
 
+    private void OnEnable()
+    {
+        InvokeRepeating(nameof(AnimateSprite), 1f / 12f);
+    }
+
     private void CheckCollision()
     {
-        grounded = false;
+        grounded = Physics2D.BoxCast(transform.position + offset, size, 0f, Vector2.zero, 0, groundlayer);
 
-        Vector2 size = collider.bounds.size;
-        size.y += 0.1f;
-        size.x /= 2f;
+        climbing = Physics2D.BoxCast(transform.position + offset2, size2, 0f, Vector2.zero, 0, ladderlayer);
+    }
+    public void OnDrawGizmos()
+    {
+        Gizmos.DrawCube(transform.position + offset, size);
 
-        int amount = Physics2D.OverlapBoxNonAlloc(transform.position, size, 0f, results);
-
-        for (int i = 0; i < amount; i++)
-        {
-            GameObject hit = results [i].gameObject;
-
-            if (hit.layer == LayerMask.NameToLayer("Ground"))
-            {
-                grounded = hit.transform.position.y < (transform.position.y - 0.5f);
-            }
-        }
+        Gizmos.DrawCube(transform.position + offset2, size2);
     }
 
     private void Update()
     {
         CheckCollision();
+        if (climbing)
+        {
+            direction.y = Input.GetAxis("Vertical") * moveSpeed;
+        }
 
-        if (Input.GetButtonDown("Jump"))
+        else if (grounded && Input.GetButtonDown("Jump"))
         {
             direction = Vector2.up * jumpStrength;
+        }
+        if (grounded)
+        {
+            direction.y = Mathf.Max(direction.y, -1f);
         }
         else
         {
@@ -53,7 +78,6 @@ public class Player : MonoBehaviour
         }
 
         direction.x = Input.GetAxis("Horizontal") * moveSpeed;
-        direction.y = Mathf.Max(direction.y, -1f);
 
         if (direction.x > 0f)
         {
@@ -67,5 +91,9 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         rigidbody.MovePosition(rigidbody.position + direction * Time.fixedDeltaTime);
+    }
+    private void AnimateSprite()
+    {
+
     }
 }
