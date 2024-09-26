@@ -38,9 +38,14 @@ public class Player : MonoBehaviour
         results = new Collider2D[4];
     }
 
-    private void OnEnable()
+   private void OnEnable()
+   {
+       InvokeRepeating(nameof(AnimateSprite), 1f / 12f, 1f/12f);
+   }
+
+    private void OnDisable()
     {
-        InvokeRepeating(nameof(AnimateSprite), 1f / 12f);
+        CancelInvoke();
     }
 
     private void CheckCollision()
@@ -94,6 +99,21 @@ public class Player : MonoBehaviour
     }
     private void AnimateSprite()
     {
+        if (climbing)
+        {
+            spriteRenderer.sprite = climbSprite;
+        }
 
+        else if (direction.x != 0f)
+        {
+            spriteIndex++;
+
+            if (spriteIndex >= runSprite.Length)
+            {
+                spriteIndex = 0;
+            }
+
+            spriteRenderer.sprite = runSprite[spriteIndex];
+        }
     }
 }
