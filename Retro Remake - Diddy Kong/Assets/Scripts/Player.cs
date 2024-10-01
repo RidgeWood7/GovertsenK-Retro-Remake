@@ -30,6 +30,8 @@ public class Player : MonoBehaviour
     public LayerMask groundlayer;
     public LayerMask ladderlayer;
 
+    public float turnspeed;
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -71,7 +73,7 @@ public class Player : MonoBehaviour
 
         else if (grounded && Input.GetButtonDown("Jump"))
         {
-            direction = Vector2.up * jumpStrength;
+            direction.y =jumpStrength;
         }
         if (grounded)
         {
@@ -82,7 +84,7 @@ public class Player : MonoBehaviour
             direction += Physics2D.gravity * Time.deltaTime;
         }
 
-        direction.x = Input.GetAxis("Horizontal") * moveSpeed;
+        direction.x = Mathf.Lerp(direction.x, Input.GetAxis("Horizontal") * moveSpeed, Time.deltaTime * turnspeed);
 
         if (direction.x > 0f)
         {

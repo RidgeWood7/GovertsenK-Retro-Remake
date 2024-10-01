@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
-    private int level;
-    private int lives;
-    private int score;
+    public int level;
+    public int lives;
+    public int score;
 
     private void Start()
     {
@@ -16,9 +16,9 @@ public class GameManager : MonoBehaviour
     {
         lives = 3;
         score = 0;
-        level = 1;
+        level = 2;
 
-        LoadLevel(2);
+        LoadLevel(1);
     }
     private void LoadLevel(int index)
     {
@@ -41,6 +41,10 @@ public class GameManager : MonoBehaviour
     public void LevelComplete()
     {
         score += 1000;
+
+        if (score > PlayerPrefs.GetInt("HighScore")) {
+            PlayerPrefs.SetInt("HighScore", score);
+        }
 
         int nextlevel = level + 1;
 
