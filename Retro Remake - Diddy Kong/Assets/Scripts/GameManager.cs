@@ -53,8 +53,8 @@ public class GameManager : MonoBehaviour
             LoadLevel(nextlevel);
         } else
         {
-            LoadLevel(0);
-            nextlevel = 0;
+            LoadLevel(3);
+            level = 2;
         }
     }
 

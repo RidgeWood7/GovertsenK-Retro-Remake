@@ -3067,6 +3067,14 @@ PrefabInstance:
       propertyPath: m_Interactable
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4546066240884518459, guid: 9c65c4da5cbedc346bd6055540d4b1cf, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 295
+      objectReference: {fileID: 0}
+    - target: {fileID: 4546066240884518459, guid: 9c65c4da5cbedc346bd6055540d4b1cf, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -147.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c65c4da5cbedc346bd6055540d4b1cf, type: 3}
