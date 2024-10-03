@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     private void LoadLevel(int index)
     {
         level = index;
+        level = 2;
 
         Camera camera = Camera.main;
 
@@ -53,7 +54,7 @@ public class GameManager : MonoBehaviour
             LoadLevel(nextlevel);
         } else
         {
-            LoadLevel(3);
+            LoadLevel(2);
             level = 2;
         }
     }
