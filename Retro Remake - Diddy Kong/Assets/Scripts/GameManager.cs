@@ -16,14 +16,13 @@ public class GameManager : MonoBehaviour
     {
         lives = 3;
         score = 0;
-        level = 2;
+        level = 3;
 
         LoadLevel(1);
     }
-    private void LoadLevel(int index)
+    private void LoadLevel(int level)
     {
-        level = index;
-        level = 2;
+        this.level = level;
 
         Camera camera = Camera.main;
 
@@ -39,7 +38,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(level);
     }
 
-    public void LevelComplete()
+    public void LevelComplete() //I think the bug is here...
     {
         score += 1000;
 
@@ -48,6 +47,11 @@ public class GameManager : MonoBehaviour
         }
 
         int nextlevel = level + 1;
+
+        if (nextlevel == 2)
+        {
+            nextlevel = 3;
+        }
 
         if (nextlevel < SceneManager.sceneCountInBuildSettings)
         {
